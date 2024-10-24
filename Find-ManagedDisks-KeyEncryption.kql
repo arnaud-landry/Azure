@@ -1,0 +1,10 @@
+Resources
+| where type == "microsoft.compute/disks"
+| extend encryptionSettings = properties.encryption.settingsCollection
+| mvexpand encryptionSettings = encryptionSettings.encryptionSettings
+| project name, location, resourceGroup, 
+          encryptionEnabled = encryptionSettings.enabled, 
+          encryptionType = encryptionSettings.encryptionType, 
+          diskEncryptionSetId = properties.encryption.diskEncryptionSetId, 
+          keyVaultUri = encryptionSettings.keyEncryptionKey.sourceVault.id, 
+          keyUri = encryptionSettings.keyEncryptionKey.keyUrl
