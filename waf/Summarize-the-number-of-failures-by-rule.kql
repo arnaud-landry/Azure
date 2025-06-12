@@ -1,0 +1,4 @@
+AzureDiagnostics
+| where Category == "FrontdoorWebApplicationFirewallLog"
+and TimeGenerated > ago(1d)
+| summarize count() by ruleName_s

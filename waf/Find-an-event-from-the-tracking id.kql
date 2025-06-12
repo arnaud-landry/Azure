@@ -1,0 +1,4 @@
+let trackingId = "REPLACE_ME";
+AzureDiagnostics
+| where Category == "FrontdoorWebApplicationFirewallLog"
+and trackingReference_s == trackingId
