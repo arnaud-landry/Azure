@@ -1,0 +1,23 @@
+let rateLimitThreshold = 200;
+let threshold = rateLimitThreshold * 0.75;
+let timeWindow = 24h;
+let topIPs = AzureDiagnostics
+| where TimeGenerated > ago(timeWindow)
+| where ResourceType == "FRONTDOORS" and Category == "FrontDoorWebApplicationFirewallLog"
+| summarize requests_per_min=count() by clientIP_s, bin(TimeGenerated, 1m)
+| summarize avg_rate_per_min=avg(requests_per_min) by clientIP_s
+| top 10 by avg_rate_per_min desc
+| project clientIP_s;
+
+AzureDiagnostics
+| where TimeGenerated > ago(timeWindow)
+| where ResourceType == "FRONTDOORS" and Category == "FrontDoorWebApplicationFirewallLog"
+| where clientIP_s in (topIPs)
+| summarize requests_per_min=count() by clientIP_s, bin(TimeGenerated, 1m)
+| render timechart
+
+AzureDiagnostics
+| where TimeGenerated > ago(24h)
+| where ResourceType == "FRONTDOORS" and Category == "FrontDoorWebApplicationFirewallLog"
+| summarize totalRequests=count() by bin(TimeGenerated, 1h)
+| render timechart

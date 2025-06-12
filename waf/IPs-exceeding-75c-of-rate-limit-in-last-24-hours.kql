@@ -1,0 +1,10 @@
+let rateLimitThreshold = 200;
+let threshold = rateLimitThreshold * 0.75; // 150 requests/min
+AzureDiagnostics
+| where TimeGenerated > ago(24h)
+| where ResourceType == "FRONTDOORS" and Category == "FrontDoorWebApplicationFirewallLog"
+| where Action_s == "Matched" and RuleName_s == "YourRateLimitRuleName" // optional: narrow down to rate-limit rule
+| summarize requests_per_min=count() by clientIP_s, bin(TimeGenerated, 1m)
+| summarize avg_rate_per_min=avg(requests_per_min) by clientIP_s
+| where avg_rate_per_min > threshold
+| sort by avg_rate_per_min desc

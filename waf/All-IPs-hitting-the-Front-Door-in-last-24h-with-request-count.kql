@@ -1,0 +1,5 @@
+AzureDiagnostics
+| where TimeGenerated > ago(24h)
+| where ResourceType == "FRONTDOORS" and Category == "FrontDoorWebApplicationFirewallLog"
+| summarize total_requests=count() by clientIP_s
+| sort by total_requests desc
