@@ -20,6 +20,7 @@ crash.log
 
 # CLI configuration files
 .terraform.lock.hcl
+.terraform.lock.info
 .terraform.tfstate
 
 # Override files (locals, secrets, etc.)
