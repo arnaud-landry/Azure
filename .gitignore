@@ -1,6 +1,9 @@
 # Temp folder
 .tmp154153135151/
 
+# Temp files 
+.DS_Store
+
 # Local .terraform directories
 .terraform/
 
