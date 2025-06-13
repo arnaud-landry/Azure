@@ -1,0 +1,11 @@
+subscription_id      = "xxxxx"
+resource_group_name  = "xxxxx"
+
+dns_zone_links = {
+  "privatelink.blob.core.windows.net" = [
+    {
+      link_name          = "xxxxx"
+      virtual_network_id = "/subscriptions/xxxxx/resourceGroups/xxxxx/providers/Microsoft.Network/virtualNetworks/xxxxx"
+    }
+  ]
+}
